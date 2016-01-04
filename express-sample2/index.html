@@ -1,0 +1,47 @@
+<html>
+  <head></head>
+  <body>
+
+    <div>
+      Event:
+      <select id="event">
+        <option value="echo">echo</option>
+        <option value="broadcast">broadcast</option>
+        <option value="all">all</option>
+      </select>
+      Message:
+      <input id="message" type="text"/>
+      <input id="send" type="button" value="Send event messages to socket.io server"/>
+    </div>
+    <div id="messages">
+      <h3>Messages from socket.io server (update event)</h3>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script>
+      var socket = io.connect('http://localhost:8080');
+
+      // append each update message to the web interface #messages div
+      socket.on('update', function (data) {
+        $("<p/>", {text: data}).appendTo("#messages");
+      });
+
+      // to use socket.io as a simple cross browser WebSocket
+      // this event catches messages coming from
+      // socket_or_io.send("the message data") server method
+      socket.on('message',function(data){
+        // and print them to the console
+        // (the web interfaces desn't display them)
+        console.log(data);
+      })
+
+      // emit an event by using the web interface parameters
+      $('#send').click(function () {
+        socket.emit($('#event').val(), $('#message').val());
+        $('#message').val("");
+      })
+      
+    </script>
+  </body>
+</html>
