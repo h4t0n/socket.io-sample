@@ -4,7 +4,7 @@ var io = require('socket.io')(server);
 
 server.listen(8080, function () {
   var port = server.address().port;
-  console.log('express-sample1 app listening on port', port);
+  console.log('express-sample2 app listening on port', port);
 });
 
 app.get('/', function (req, res) {
